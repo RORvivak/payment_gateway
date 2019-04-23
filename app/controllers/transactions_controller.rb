@@ -5,6 +5,9 @@ class TransactionsController < ApplicationController
 		params.each do |variable, key|
 			response << variable+"="+key.to_s+"|"
 		end
-		render json: {status: 'SUCCESS', string: response[0..5].join("").chop}
+		value = response[0..5].join("")
+		digest = Digest::SHA1.hexdigest(value.chop)
+		string_value = value+"hash=#{digest}"
+		render json: {status: 'SUCCESS', string: string_value}
 	end	
 end
